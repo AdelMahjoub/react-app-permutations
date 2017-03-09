@@ -4,6 +4,7 @@ import './App.css';
 import Header from "./components/header";
 import Form from "./components/form";
 import Permutations from "./components/permutations";
+import Navbar from "./components/navbar";
 
 class App extends Component {
   constructor(props) {
@@ -50,6 +51,8 @@ class App extends Component {
   render() {
     return (
       <div className="container">
+        <Navbar />
+        <div className="page-header"></div>
         <Header />
         <Form 
           handleInput={this.handleInput} 
