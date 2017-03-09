@@ -1,5 +1,4 @@
 import React from "react";
-import Permutation from "./permutation"
 
 const Permutations = (props) => {
   return (
@@ -10,15 +9,13 @@ const Permutations = (props) => {
         </p>
       </div>
       <div className="col-xs-12 col-md-12">
-        <table className="table table-striped">
-          <tbody>
+        <pre>
             {
-              props.permutations.map((permutation, i) => {
-                return <Permutation key={`permutation-${i}`} permutation={permutation}/> 
+              props.permutations.map((permutation) => {
+                return permutation
               })
             }
-          </tbody>
-        </table>
+        </pre>
       </div>
     </div>
   )
