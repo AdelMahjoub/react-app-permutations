@@ -5,17 +5,21 @@ import Header from "./components/header";
 import Form from "./components/form";
 import Permutations from "./components/permutations";
 import Navbar from "./components/navbar";
+import ProcessIndicator from "./components/process_indicator";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      term: "",
-      permutations: null
+      term: "", // input string
+      permutations: null, // array oftotal permutations 
+      processing: false, // become true when web worker runs
     }
+    this.worker = new Worker("worker.js");
     this.handleInput = this.handleInput.bind(this);
     this.proceed = this.proceed.bind(this); 
     this.workerCallback = this.workerCallback.bind(this);
+    this.stopWorker = this.stopWorker.bind(this);
   }
 
   handleInput(e) {
@@ -23,21 +27,25 @@ class App extends Component {
   }
 
   workerCallback(e) {
-    this.setState({ permutations: e.data });
-    
-    //terminate worker
-    e.currentTarget.terminate();
+    this.setState({ permutations: e.data, processing: false });
+  }
+
+  handleError() {
+    this.setState({ permutations: ["Your browser does not support Web Workers"] });
   }
 
   proceed() {
-    var worker;
+    this.setState({ processing: true });
     if(typeof(Worker) !== "undefined") {
-      worker = new Worker("worker.js");
-      worker.postMessage(this.state.term);
-      worker.onmessage = this.workerCallback;
+      this.worker.postMessage(this.state.term);
+      this.worker.onmessage = this.workerCallback;
     } else {
-      console.log("This browser does not support web workers");
+      this.handleError();
     }
+  }
+
+  stopWorker() {
+    this.worker.terminate();
   }
 
   handleSubmit(e) {
@@ -56,6 +64,11 @@ class App extends Component {
           handleClick={this.proceed}
           handleSubmit={this.handleSubmit}
         />
+        {
+          this.state.processing
+          &&
+          <ProcessIndicator handleStop={this.stopWorker}/>
+        }
         {
           this.state.permutations 
           &&

@@ -11,7 +11,7 @@ const Permutations = (props) => {
       <div className="col-xs-12 col-md-12">
         <pre>
             {
-              props.permutations.map((permutation) => {
+              props.permutations.map((permutation, i) => {
                 return permutation
               })
             }
