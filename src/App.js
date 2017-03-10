@@ -27,7 +27,9 @@ class App extends Component {
   }
 
   workerCallback(e) {
+    console.time("New state set");
     this.setState({ permutations: e.data, processing: false });
+    console.timeEnd("New state set");
   }
 
   handleError() {
