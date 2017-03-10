@@ -48,6 +48,7 @@ class App extends Component {
 
   stopWorker() {
     this.worker.terminate();
+    this.worker = new Worker("worker.js");
   }
 
   handleSubmit(e) {
